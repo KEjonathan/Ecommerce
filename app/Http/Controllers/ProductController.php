@@ -23,7 +23,6 @@ class ProductController extends Controller
             $selectedCategory = Category::find($request->category_id);
         }
         
-        
         if ($request->has('availability')) {
             $availability = $request->availability;
             if ($availability === 'morning') {
@@ -43,9 +42,32 @@ class ProductController extends Controller
             });
         }
         
+        // Apply sorting
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'latest':
+                    $query->latest();
+                    break;
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'popular':
+                    $query->withCount('ratings')
+                          ->orderByDesc('ratings_count');
+                    break;
+                default:
+                    $query->orderBy('name');
+                    break;
+            }
+        } else {
+            $query->orderBy('name');
+        }
+        
         $products = $query->with(['category', 'supplier'])
             ->where('status', true)
-            ->orderBy('name')
             ->paginate(12);
             
         $categories = Category::where('status', true)->get();

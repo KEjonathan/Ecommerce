@@ -53,7 +53,11 @@
                 @endif
                 
                 <a href="{{ route('products.show', $product) }}">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top product-image" alt="{{ $product->name }}">
+                    @if($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top product-image" alt="{{ $product->name }}">
+                    @else
+                        <img src="https://via.placeholder.com/300x300?text=No+Image" class="card-img-top product-image" alt="{{ $product->name }}">
+                    @endif
                 </a>
                 
                 <div class="card-body p-3">
@@ -61,7 +65,7 @@
                         <h5 class="product-title">{{ $product->name }}</h5>
                     </a>
                     <p class="product-category mb-2">
-                        <a href="{{ route('products.index', ['category' => $product->category->id]) }}" class="text-decoration-none text-muted">
+                        <a href="{{ route('products.index', ['category_id' => $product->category->id]) }}" class="text-decoration-none text-muted">
                             {{ $product->category->name }}
                         </a>
                     </p>

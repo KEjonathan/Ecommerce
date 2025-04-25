@@ -8,7 +8,7 @@
             <div class="card border-0">
                 <div class="text-center">
                     @if($product->image)
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded" alt="{{ $product->name }}" style="max-height: 400px; object-fit: contain;">
+                        <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded" alt="{{ $product->name }}" style="max-height: 400px; object-fit: contain;">
                     @else
                         <div class="bg-light text-center py-5 rounded" style="height: 400px;">
                             <i class="fas fa-image fa-5x text-muted mt-5"></i>
@@ -208,7 +208,11 @@
                     <div class="col-md-3 mb-4">
                         <div class="card product-card h-100">
                             <a href="{{ route('products.show', $relatedProduct) }}">
-                                <img src="https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="{{ $relatedProduct->name }}" style="height: 150px; object-fit: cover;">
+                                @if($relatedProduct->image)
+                                    <img src="{{ asset('storage/' . $relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}" style="height: 150px; object-fit: cover;">
+                                @else
+                                    <img src="https://via.placeholder.com/300x150?text=No+Image" class="card-img-top" alt="{{ $relatedProduct->name }}" style="height: 150px; object-fit: cover;">
+                                @endif
                             </a>
                             <div class="card-body">
                                 <h6 class="card-title">{{ $relatedProduct->name }}</h6>

@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes - accessible without login
 Route::get('/', [DashboardController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/featured', [DashboardController::class, 'featuredProducts'])->name('products.featured');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
@@ -45,7 +46,6 @@ Route::get('/cart/merge', [CartController::class, 'mergeGuestCartWithUserCart'])
 
 // Public dashboard routes (no auth required)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/products/featured', [DashboardController::class, 'featuredProducts'])->name('products.featured');
 
 // Role-specific dashboard routes (still need auth)
 Route::middleware(['auth'])->group(function() {
@@ -76,7 +76,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/notifications/unread-count', [NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
     
     // Admin routes
-    Route::middleware(['admin'])->group(function () {
+    Route::middleware(['admin'])->prefix('admin')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class)->except(['index', 'show']);
         Route::resource('suppliers', SupplierController::class);
